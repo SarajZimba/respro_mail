@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Create Multiple Tables {% endblock %}
+
+{% block content %}
+  <div class="card p-2">
+    <div class="card-body p-4 m-4">
+      <h1>Create Multiple Tables</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ formset.management_form }}
+        <table>
+          <thead>
+            <tr>
+              <th>Terminal</th>
+              <th>Table Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for form in formset %}
+              <tr>
+                <td>{{ form.terminal }}</td>
+                <td>{{ form.table_number }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,186 @@
+
+
+{% extends 'base.html' %}
+{% block pagetitle %} MailRecipient List {% endblock %}
+{% block title %} Daily Cash Position{% endblock %}
+{% block content %}
+    <div class="card">
+        <div class="card-body pt-0">
+            <!--begin::Table-->
+            <!-- <form method="get" action="" class="mt-4">
+                <label class="form-check form-check-sm form-check-custom form-check-solid mb-3 me-5" for="id_date_filter">Filter by Date:</label>
+                <input type="date" class="col datetimepicker-input form-control-solid w-125px" name="date_filter" id="id_date_filter" value="{{ request.GET.date_filter }}" placeholder="Select Date">
+                <button class="btn btn-sm btn-light-primary" type="submit">Search</button>
+            </form> -->
+            {% include 'components/search_filter1.html' with  search_title="Search Materialized" export_url="cashdrop_export" %}
+            <div id="kt_customers_table_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                <div class="table-responsive">
+                    <!-- Table for Expense -->
+                    <h1>Expense</h1>
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="expense_table">
+                        <!--begin::Table head-->
+                        {% if object_list %}
+                            <thead class="fw-bolder">
+                                <!--begin::Table row-->
+                                <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                                    <th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label=""
+                                        style="width: 29.25px;">
+                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                            <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                                data-kt-check-target="#expense_table .form-check-input" value="1">
+                                        </div>
+                                    </th>
+                                    <th class="min-w-125px sorting" tabindex="0">Datetime(Client)</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Employee Name</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Branch</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Opening Balance</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Expense</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Remaining Balance</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Narration</th>
+                                </tr>
+                                <!--end::Table row-->
+                            </thead>
+                        {% endif %}
+                        <tbody class="fw-bold text-gray-600">
+                            {% for object in object_list %}
+                                {% if object.expense != 0 %}
+                                    <!-- Display data with non-zero expense -->
+                                    <tr class="odd" id="expense-{{ object.pk }}">
+                                        <td>
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" value="1">
+                                            </div>
+                                        </td>
+                                        <td>{{ object.datetime }}</td>
+                                        <td>{{ object.employee }}</td>
+                                        <td>{{ object.branch }}</td>
+                                        <td>{{ object.opening_balance }}</td>
+                                        <td>{{ object.expense }}</td>
+                                        <td>{{ object.remaining_balance }}</td>
+                                        <td>{{ object.narration }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                {% include 'components/empty.html' with title="Daily_Sales_Report" %}
+                            {% endfor %}
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                    <!-- Table for Cashdrop Amount -->
+                    <h1>CashDrop</h1>
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="cashdrop_table">
+                        <!--begin::Table head-->
+                        {% if object_list %}
+                            <thead class="fw-bolder">
+                                <!--begin::Table row-->
+                                <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                                    <th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label=""
+                                        style="width: 29.25px;">
+                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                            <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                                data-kt-check-target="#cashdrop_table .form-check-input" value="1">
+                                        </div>
+                                    </th>
+                                    <th class="min-w-125px sorting" tabindex="0">Datetime(Client)</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Employee Name</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Branch</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Opening Balance</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Cashdrop Amount</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Remaining Balance</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Narration</th>
+                                </tr>
+                                <!--end::Table row-->
+                            </thead>
+                        {% endif %}
+                        <tbody class="fw-bold text-gray-600">
+                            {% for object in object_list %}
+                                {% if object.cashdrop_amount != 0 %}
+                                    <!-- Display data with non-zero cashdrop_amount -->
+                                    <tr class="odd" id="cashdrop-{{ object.pk }}">
+                                        <td>
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" value="1">
+                                            </div>
+                                        </td>
+                                        <td>{{ object.datetime }}</td>
+                                        <td>{{ object.employee }}</td>
+                                        <td>{{ object.branch }}</td>
+                                        <td>{{ object.opening_balance }}</td>
+                                        <td>{{ object.cashdrop_amount|floatformat:2 }}</td>
+                                        <td>{{ object.remaining_balance }}</td>
+                                        <td>{{ object.narration }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                {% include 'components/empty.html' with title="Daily_Sales_Report" %}
+                            {% endfor %}
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                    <!-- Table for AddCash -->
+                    <h1>AddCash</h1>
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer" id="addcash_table">
+                        <!--begin::Table head-->
+                        {% if object_list %}
+                            <thead class="fw-bolder">
+                                <!--begin::Table row-->
+                                <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                                    <th class="w-10px pe-2 sorting_disabled" rowspan="1" colspan="1" aria-label=""
+                                        style="width: 29.25px;">
+                                        <div class="form-check form-check-sm form-check-custom form-check-solid me-3">
+                                            <input class="form-check-input" type="checkbox" data-kt-check="true"
+                                                data-kt-check-target="#addcash_table .form-check-input" value="1">
+                                        </div>
+                                    </th>
+                                    <th class="min-w-125px sorting" tabindex="0">Datetime(Client)</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Employee Name</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Branch</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Opening Balance</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Add Cash</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Remaining Balance</th>
+                                    <th class="min-w-125px sorting" tabindex="0">Narration</th>
+                                </tr>
+                                <!--end::Table row-->
+                            </thead>
+                        {% endif %}
+                        <tbody class="fw-bold text-gray-600">
+                            {% for object in object_list %}
+                                {% if object.addCash != 0 %}
+                                    <!-- Display data with non-zero addCash -->
+                                    <tr class="odd" id="addcash-{{ object.pk }}">
+                                        <td>
+                                            <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="checkbox" value="1">
+                                            </div>
+                                        </td>
+                                        <td>{{ object.datetime }}</td>
+                                        <td>{{ object.employee }}</td>
+                                        <td>{{ object.branch }}</td>
+                                        <td>{{ object.opening_balance }}</td>
+                                        <td>{{ object.addCash }}</td>
+                                        <td>{{ object.remaining_balance }}</td>
+                                        <td>{{ object.narration }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                {% include 'components/empty.html' with title="Daily_Sales_Report" %}
+                            {% endfor %}
+                        </tbody>
+                        <!--end::Table body-->
+                    </table>
+                </div>
+                {% if object_list %}
+                    {% include 'pagination.html' %}
+                {% endif %}
+            </div>
+            <!--end::Table-->
+        </div>
+        <!--end::Card body-->
+    </div>
+    <script>
+        // Your JavaScript code here
+    </script>
+{% endblock %}
+
+
+
